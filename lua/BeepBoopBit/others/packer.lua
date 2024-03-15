@@ -49,6 +49,7 @@ return require("packer").startup(
 		use ("rebelot/kanagawa.nvim")
 		use ("nyoom-engineering/oxocarbon.nvim")
 		use ("NvChad/nvim-colorizer.lua")
+		use { "catppuccin/nvim", as = "catppuccin" }
 
 		-- Treesitter
 		use ("nvim-treesitter/nvim-treesitter", {run = ":TSUpdate"})
