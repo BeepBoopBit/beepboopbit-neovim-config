@@ -3,7 +3,9 @@ require("BeepBoopBit.others.packer")
 require("BeepBoopBit.mappings.global")
 require("BeepBoopBit.others.colors")
 require("BeepBoopBit.others.copilot")
-
--- Debugger
+require("BeepBoopBit.others.tabGuide")
+require("BeepBoopBit.others.bookmark")
 require("BeepBoopBit.Debugger.global")
 require("BeepBoopBit.Debugger.dap-cpp")
+require("BeepBoopBit.others.others")
+require("BeepBoopBit.others.harpoon")

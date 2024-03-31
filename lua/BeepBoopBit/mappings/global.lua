@@ -12,7 +12,7 @@ vim.keymap.set('v', 'L', "><CR>")
 vim.keymap.set('v', 'H', "<<CR>")
 
 -- Yank to the Clipboard
-vim.keymap.set('v', "<leader>c", "\"+y")
+vim.keymap.set('v', "<leader>y", "\"+y")
 vim.keymap.set('n', "<leader>p", "\"*p")
 
 

@@ -6,7 +6,8 @@ require'nvim-treesitter.configs'.setup {
     "gitcommit", "gitignore", "go", "html", "htmldjango", "http", "ini",
     "java", "javascript", "json", "json5", "latex", "markdown", "matlab",
     "php", "phpdoc", "python", "r", "regex", "scss", "sql", "typescript",
-    "xml", "yaml"},
+    "xml", "yaml"
+  },
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,

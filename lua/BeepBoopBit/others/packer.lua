@@ -23,6 +23,28 @@ return require("packer").startup(
 			}
 		})
 
+		-- Harpoon2
+		use {
+			"ThePrimeagen/harpoon",
+			branch = "harpoon2",
+			requires = { {"nvim-lua/plenary.nvim"} }
+		}
+
+		-- Reactive
+		use {
+			'rasulomaroff/reactive.nvim'
+		}
+
+		-- Bookmark
+		use {
+			'crusj/bookmarks.nvim',
+			branch = 'main',
+			requires = { 'kyazdani42/nvim-web-devicons' },
+			config = function()
+				require("telescope").load_extension("bookmarks")
+			end
+		}
+
 		-- Git
 		use ("tpope/vim-fugitive")
 		use ("tpope/vim-rhubarb")
@@ -44,6 +66,19 @@ return require("packer").startup(
 			}
 		})
 
+		-- Others
+		use {"lukas-reineke/indent-blankline.nvim"}
+		use { "shellRaining/hlchunk.nvim" }
+		use {
+			"windwp/nvim-autopairs",
+			event = "InsertEnter",
+			config = function()
+				require("nvim-autopairs").setup {}
+			end
+		}
+		use {"HiPhish/rainbow-delimiters.nvim"}
+
+
 		-- Themes and Colors
 		use ("AlexvZyl/nordic.nvim")
 		use ("rebelot/kanagawa.nvim")
@@ -62,7 +97,8 @@ return require("packer").startup(
 			"mfussenegger/nvim-dap",
 			requires = {
 				{"theHamsta/nvim-dap-virtual-text"},
-				{"rcarriga/nvim-dap-ui"}
+				{"rcarriga/nvim-dap-ui"},
+				{"nvim-neotest/nvim-nio"}
 			}
 		})
 		-- OPT
