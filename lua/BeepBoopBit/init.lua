@@ -1,11 +1,17 @@
-require("BeepBoopBit.flags.global")
-require("BeepBoopBit.others.packer")
-require("BeepBoopBit.mappings.global")
-require("BeepBoopBit.others.colors")
+-- Essentials
+require("BeepBoopBit.native.flags")
+require("BeepBoopBit.native.mapping")
+require("BeepBoopBit.others.lazy")
 require("BeepBoopBit.others.copilot")
-require("BeepBoopBit.others.tabGuide")
+
+-- UI/UX
+require("BeepBoopBit.others.colors")
+require("BeepBoopBit.others.hlchunk")
+
+-- Others
+require("BeepBoopBit.others.reactive")
 require("BeepBoopBit.others.bookmark")
-require("BeepBoopBit.Debugger.global")
-require("BeepBoopBit.Debugger.dap-cpp")
-require("BeepBoopBit.others.others")
 require("BeepBoopBit.others.harpoon")
+
+-- Debugging
+require("BeepBoopBit.others.dap")

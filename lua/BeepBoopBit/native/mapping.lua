@@ -27,3 +27,5 @@ vim.keymap.set('n', "<leader>dc", ":lua require'dap'.continue()<CR>")
 vim.keymap.set('n', "<leader>dpc", ":lua require'dap'.close()<CR>")
 vim.keymap.set('n', "<leader>dpo", ":lua require'dap'.open()<CR>")
 
+-- Formatter
+vim.keymap.set('n', "<leader>lf", ":LspZeroFormat<CR>")

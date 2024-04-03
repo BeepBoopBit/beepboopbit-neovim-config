@@ -1,34 +1,36 @@
-local lsp = require('lsp-zero').preset({})
+local lsp_zero = require('lsp-zero')
 
-lsp.preset("recommended")
-lsp.on_attach(function(client, bufnr)
+lsp_zero.on_attach(function(client, bufnr)
   -- see :help lsp-zero-keybindings
   -- to learn the available actions
-  lsp.default_keymaps({buffer = bufnr})
+  lsp_zero.default_keymaps({buffer = bufnr})
 end)
-
--- (Optional) Configure lua language server for neovim
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
-capabilities.offsetEncoding = "utf-8"
-capabilities.offset_encoding = "utf-8"
-capabilities.clangd = {}
-capabilities.clangd.offsetEncoding = "utf-8"
-capabilities.clangd.offset_encoding= "utf-8"
 
 require('mason').setup({})
 require('mason-lspconfig').setup({
-  ensure_installed = {
-    "typos_lsp", "angularls", "bashls", "clangd", "omnisharp", "cssls",
-    "dockerls", "eslint", "emmet_language_server", "html", "jsonls",
-    "tsserver", "ltex", "lua_ls", "marksman", "intelephense",
-    "jedi_language_server",  "sqlls", "lemminx", "yamlls"
-  },
+  ensure_installed = {},
   handlers = {
-    lsp.default_setup,
-    require('lspconfig').clangd.setup({
-      capabilities=capabilities
-    })
-  },
+    lsp_zero.default_setup,
+    lua_ls = function()
+      local lua_opts = lsp_zero.nvim_lua_ls()
+      require('lspconfig').lua_ls.setup(lua_opts)
+    end,
+  }
 })
 
-lsp.setup()
+local cmp = require('cmp')
+local cmp_format = lsp_zero.cmp_format()
+
+cmp.setup({
+  formatting = cmp_format,
+  mapping = cmp.mapping.preset.insert({
+    -- scroll up and down the documentation window
+    ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-d>'] = cmp.mapping.scroll_docs(4),
+  }),
+  snippet = {
+    expand = function(args)
+      require('luasnip').lsp_expand(args.body)
+    end,
+  },
+})

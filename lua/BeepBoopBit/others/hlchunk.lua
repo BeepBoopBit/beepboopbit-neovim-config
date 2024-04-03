@@ -1,12 +1,3 @@
--- Reactive
-require('reactive').setup ({
-  builtin = {
-    cursorline = true,
-    cursor = true,
-    modemsg = true
-  }
-})
-
 require('hlchunk').setup({
   chunk = {
     chars = {
