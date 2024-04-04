@@ -35,7 +35,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = ' '
 
 -- Folds
-vim.opt.foldmethod ="expr"
+vim.opt.foldmethod = "expr"
 vim.opt.foldlevel = 20
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 --vim.opt.foldclose = "all"

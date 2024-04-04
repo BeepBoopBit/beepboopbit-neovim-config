@@ -3,7 +3,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set Explorer
-vim.keymap.set('n', "<leader>ef", vim.cmd.Ex, {desc = "[E]xplore [F]iles"})
+vim.keymap.set('n', "<leader>ef", vim.cmd.Ex, { desc = "[E]xplore [F]iles" })
 
 
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
@@ -28,4 +28,25 @@ vim.keymap.set('n', "<leader>dpc", ":lua require'dap'.close()<CR>")
 vim.keymap.set('n', "<leader>dpo", ":lua require'dap'.open()<CR>")
 
 -- Formatter
-vim.keymap.set('n', "<leader>lf", ":LspZeroFormat<CR>")
+vim.keymap.set('n', "<leader>lf", ":lua vim.lsp.buf.format()<CR>")
+
+
+-- Terminal Mapping
+
+-- [ Terminal Navigation ]
+vim.keymap.set('t', "<C-w>h", "<C-\\><C-n><C-w>h")
+vim.keymap.set('t', "<C-w>l", "<C-\\><C-n><C-w>l")
+vim.keymap.set('t', "<C-w>j", "<C-\\><C-n><C-w>j")
+vim.keymap.set('t', "<C-w>k", "<C-\\><C-n><C-w>k")
+
+-- [ Remove Terminal ]
+vim.keymap.set('n', "<leader>mr", "<C-w>l<C-\\><C-n>:q<CR>")
+
+-- [ Make Terminal ]
+vim.keymap.set('n', "<leader>mt", "<C-w><C-v><C-w>l:ter<CR><S-i>") -- Create terminal on the right and enter insert mode
+
+-- [ [ Execute Terminal ] ]
+vim.keymap.set('n', "<leader>mec", "<C-w><C-v><C-w>l:ter<CR><S-i>g++ -g main.cpp && ./a.out<CR><C-\\><C-n><C-w>h") -- Compile and Run C++ Code (Goes back to source code)
+
+-- Use Terminal
+vim.keymap.set('n', "<leader>uec", "<C-w>l<S-i>g++ -g main.cpp && ./a.out<CR><C-\\><C-n><C-w>h") -- Compile and Run C++ Code (Goes back to source code)
