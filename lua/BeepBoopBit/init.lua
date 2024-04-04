@@ -1,17 +1,18 @@
 -- Essentials
 require("BeepBoopBit.native.flags")
 require("BeepBoopBit.native.mapping")
-require("BeepBoopBit.others.lazy")
-require("BeepBoopBit.others.copilot")
 
--- UI/UX
-require("BeepBoopBit.others.colors")
-require("BeepBoopBit.others.hlchunk")
-
--- Others
-require("BeepBoopBit.others.reactive")
-require("BeepBoopBit.others.bookmark")
-require("BeepBoopBit.others.harpoon")
-
--- Debugging
-require("BeepBoopBit.others.dap")
+-- lazy
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
+end
+vim.opt.rtp:prepend(lazypath)
+require("lazy").setup("BeepBoopBit.plugins")
