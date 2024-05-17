@@ -11,77 +11,83 @@ return {
         { "L3MON4D3/LuaSnip" }                   -- Required
     },
     config = function()
-        local cmp = require('cmp')
-        local cmp_select_opts = { behavior = cmp.SelectBehavior.Select }
+        vim.api.nvim_create_autocmd('LspAttach', {
+          group = vim.api.nvim_create_augroup('user_lsp_attach', {clear = true}),
+          callback = function(event)
+            local opts = {buffer = event.buf}
 
-        local lsp_zero = require('lsp-zero')
-        local cmp_format = lsp_zero.cmp_format()
-
-        lsp_zero.on_attach(function(client, bufnr)
-            lsp_zero.default_keymaps({ buffer = bufnr })
-        end)
-
-        require("mason").setup({})
-        require("mason-lspconfig").setup({
-            ensure_installed = {
-                "clangd", "emmet_language_server", "html", "lua_ls"
-            },
-            automatic_installation = true,
-            handlers = {
-                lsp_zero.default_setup,
-                lua_ls = function()
-                    local lua_opts = lsp_zero.nvim_lua_ls()
-                    require("lspconfig").lua_ls.setup(lua_opts)
-                    require("lspconfig").clangd.setup({
-                        -- on_attach = on_attach,
-                        capabilities = require("cmp_nvim_lsp").default_capabilities(),
-                        cmd = {
-                            "clangd",
-                            "--offset-encoding=utf-16",
-                        },
-                    })
-                end,
-            },
+            vim.keymap.set('n', 'gd', function() vim.lsp.buf.definition() end, opts)
+            vim.keymap.set('n', 'K', function() vim.lsp.buf.hover() end, opts)
+            vim.keymap.set('n', '<leader>vws', function() vim.lsp.buf.workspace_symbol() end, opts)
+            vim.keymap.set('n', '<leader>vd', function() vim.diagnostic.open_float() end, opts)
+            vim.keymap.set('n', '[d', function() vim.diagnostic.goto_next() end, opts)
+            vim.keymap.set('n', ']d', function() vim.diagnostic.goto_prev() end, opts)
+            vim.keymap.set('n', '<leader>vca', function() vim.lsp.buf.code_action() end, opts)
+            vim.keymap.set('n', '<leader>vrr', function() vim.lsp.buf.references() end, opts)
+            vim.keymap.set('n', '<leader>vrn', function() vim.lsp.buf.rename() end, opts)
+            vim.keymap.set('i', '<C-h>', function() vim.lsp.buf.signature_help() end, opts)
+          end,
         })
 
-        cmp.setup({
-            sources = {
-                { name = 'nvim_lsp' },
-            },
-            mapping = {
-                ['<CR>'] = cmp.mapping.confirm({ select = true }),
-                ['<C-e>'] = cmp.mapping.abort(),
-                ['<C-u>'] = cmp.mapping.scroll_docs(-4),
-                ['<C-d>'] = cmp.mapping.scroll_docs(4),
-                ['<Up>'] = cmp.mapping.select_prev_item(cmp_select_opts),
-                ['<Down>'] = cmp.mapping.select_next_item(cmp_select_opts),
-                ['<C-p>'] = cmp.mapping(function()
-                    if cmp.visible() then
-                        cmp.select_prev_item(cmp_select_opts)
-                    else
-                        cmp.complete()
-                    end
-                end),
-                ['<C-n>'] = cmp.mapping(function()
-                    if cmp.visible() then
-                        cmp.select_next_item(cmp_select_opts)
-                    else
-                        cmp.complete()
-                    end
-                end),
-            },
-            snippet = {
-                expand = function(args)
-                    require('luasnip').lsp_expand(args.body)
-                end,
-            },
-            window = {
-                documentation = {
-                    max_height = 15,
-                    max_width = 60,
+        local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+        require('mason').setup({})
+        require('mason-lspconfig').setup({
+          ensure_installed = {'tsserver', 'rust_analyzer'},
+          handlers = {
+            function(server_name)
+              require('lspconfig')[server_name].setup({
+                capabilities = lsp_capabilities,
+              })
+            end,
+            lua_ls = function()
+              require('lspconfig').lua_ls.setup({
+                capabilities = lsp_capabilities,
+                settings = {
+                  Lua = {
+                    runtime = {
+                      version = 'LuaJIT'
+                    },
+                    diagnostics = {
+                      globals = {'vim'},
+                    },
+                    workspace = {
+                      library = {
+                        vim.env.VIMRUNTIME,
+                      }
+                    }
+                  }
                 }
-            },
-            formatting = cmp_format,
+              })
+            end,
+          }
+        })
+
+        local cmp = require('cmp')
+        local cmp_select = {behavior = cmp.SelectBehavior.Select}
+
+        -- this is the function that loads the extra snippets to luasnip
+        -- from rafamadriz/friendly-snippets
+        require('luasnip.loaders.from_vscode').lazy_load()
+
+        cmp.setup({
+          sources = {
+            {name = 'path'},
+            {name = 'nvim_lsp'},
+            {name = 'luasnip', keyword_length = 2},
+            {name = 'buffer', keyword_length = 3},
+          },
+          mapping = cmp.mapping.preset.insert({
+            ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+            ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+            ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+            ['<C-Space>'] = cmp.mapping.complete(),
+          }),
+          snippet = {
+            expand = function(args)
+              require('luasnip').lsp_expand(args.body)
+            end,
+          },
         })
     end
 }
